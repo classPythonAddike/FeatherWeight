@@ -36,7 +36,7 @@ prefs.close()
 fils = (("Python Files", "*.py"), ("HTML Files", "*.html"), ("C++ Files", "*.cpp"), ("Ruby Files", "*.rb"), ("Text Files", "*.txt"))
 username = os.environ["USERNAME"]
 
-codext = ScrolledText(root, width = 50, height  = he, font = (font, size), padx = 5, tabs = 25)
+codext = ScrolledText(root, width = 50, height  = he, font = (font, size), padx = 5, tabs = 25, undo = True)
 
 def newFile():
     global filename, codext, root
@@ -313,6 +313,16 @@ def changeFont():
 def changeFontMenu(d):
     changeFont()
 
+def undo():
+    global codext
+    try:
+        codext.edit_undo()
+    except:
+        pass
+
+def undoEditMenu(e):
+    undo()
+
 def closing():
     global root, size, filename, currentDir, font, fontSize, mode
     if (codext.get(1.0, 'end') != "\n"):
@@ -378,6 +388,9 @@ root.bind("<Control_R><o>", openFileMenu)
 
 editmenu.add_command(label = "Copy", command = copy, accelerator = "Ctrl+C")
 editmenu.add_command(label = "Paste", command = paste, accelerator = "Ctrl+V")
+editmenu.add_command(label = "Undo", command = undo, accelerator = "Ctrl+Z")
+root.bind("<Control_L><z>", undoEditMenu)
+root.bind("<Control_R><z>", undoEditMenu)
 
 runmenu.add_command(label = "Run", command = runCode, accelerator = "F5")
 root.bind("<F5>", runCodeMenu)
